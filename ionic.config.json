@@ -1,0 +1,7 @@
+{
+  "name": "tareaApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
