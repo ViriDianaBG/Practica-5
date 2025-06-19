@@ -1,20 +1,38 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+<ion-content class="ion-padding">
+  <!-- Sección de estadísticas rápidas -->
+  <div class="stats-container">
+    <div class="stat-card">
+      <ion-icon name="list-outline" color="primary"></ion-icon>
+      <div class="stat-content">
+        <h3>{{ tareas.length }}</h3>
+        <p>Total</p>
+      </div>
+    </div>
   </div>
+
+  <!-- Lista de tareas mejorada -->
+  <div class="tasks-section">
+    <div class="section-header">
+      <h2>
+        <ion-icon name="albums-outline"></ion-icon>
+        Tareas Pendientes
+      </h2>
+    </div>
+
+    <!-- Mensaje cuando no hay tareas -->
+    <div class="empty-state" *ngIf="tareas.length === 0">
+      <ion-icon name="document-text-outline" color="medium"></ion-icon>
+      <h3>No hay tareas pendientes</h3>
+      <p>¡Perfecto! Puedes agregar una nueva tarea para comenzar.</p>
+    </div>
+  </div>
+
+  <!-- Botón flotante para nueva tarea -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="secondary" (click)="nuevaTarea()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
