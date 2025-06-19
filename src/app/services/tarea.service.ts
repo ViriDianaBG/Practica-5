@@ -4,24 +4,37 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class TareaService {
-  private storageKey = 'tareas';
+  private tareasKey = 'tareas';
+  private idKey = 'ultimoId';
 
   constructor() {}
 
+  private obtenerUltimoId(): number {
+    const id = localStorage.getItem(this.idKey);
+    return id ? parseInt(id, 10) : 0;
+  }
+
+  private guardarUltimoId(id: number): void {
+    localStorage.setItem(this.idKey, id.toString());
+  }
+
   async obtenerTareas(): Promise<any[]> {
-    const data = localStorage.getItem(this.storageKey);
+    const data = localStorage.getItem(this.tareasKey);
     return data ? JSON.parse(data) : [];
   }
 
   async guardarTareas(tareas: any[]): Promise<void> {
-    localStorage.setItem(this.storageKey, JSON.stringify(tareas));
+    localStorage.setItem(this.tareasKey, JSON.stringify(tareas));
   }
 
   async agregarTarea(tarea: any): Promise<void> {
     const tareas = await this.obtenerTareas();
-    tarea.id = Date.now();
+    const nuevoId = this.obtenerUltimoId() + 1;
+    tarea.id = nuevoId;
+    tarea.estado = 'pendiente'; // nuevo campo
     tareas.push(tarea);
     await this.guardarTareas(tareas);
+    this.guardarUltimoId(nuevoId);
   }
 
   async obtenerTareaPorId(id: number): Promise<any | undefined> {
@@ -36,5 +49,15 @@ export class TareaService {
       tareas[index] = tareaActualizada;
       await this.guardarTareas(tareas);
     }
+  }
+
+  async contarTareasPendientes(): Promise<number> {
+    const tareas = await this.obtenerTareas();
+    return tareas.filter((t) => t.estado !== 'completada').length;
+  }
+
+  async contarTareasCompletadas(): Promise<number> {
+    const tareas = await this.obtenerTareas();
+    return tareas.filter((t) => t.estado === 'completada').length;
   }
 }

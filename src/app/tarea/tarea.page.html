@@ -1,23 +1,119 @@
+<ion-content class="ion-padding notion-style">
+  <!-- Header estilo Notion -->
+  <div class="notion-header">
+    <h1 class="notion-title">Mis Tareas</h1>
+    <div class="notion-actions">
+      <ion-button fill="clear" class="notion-button">
+        <ion-icon name="search-outline" slot="start"></ion-icon>
+        Buscar
+      </ion-button>
+      <ion-button fill="clear" class="notion-button">
+        <ion-icon name="filter-outline" slot="start"></ion-icon>
+        Filtrar
+      </ion-button>
+    </div>
+  </div>
 
-<app-header
-  title="Crear Tarea"
- ></app-header>
+  <!-- Sección de estadísticas -->
+  <div class="notion-stats-container">
+    <div class="notion-stat-card">
+      <div class="stat-icon-container">
+        <ion-icon name="list-outline"></ion-icon>
+      </div>
+      <div class="stat-content">
+        <h3>{{ tareas.length }}</h3>
+        <p>Total de tareas</p>
+      </div>
+    </div>
 
+    <div class="notion-stat-card">
+      <div class="stat-icon-container">
+        <ion-icon name="time-outline"></ion-icon>
+      </div>
+      <div class="stat-content">
+        <h3>{{ tareasPendientes }}</h3>
+        <p>Pendientes</p>
+      </div>
+    </div>
 
-<ion-content>
-  <ion-list>
-    <ion-item>
-      <ion-label position="floating">Título</ion-label>
-      <ion-input [(ngModel)]="tarea.titulo"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Descripción</ion-label>
-      <ion-textarea [(ngModel)]="tarea.descripcion"></ion-textarea>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Fecha de vencimiento</ion-label>
-      <ion-datetime [(ngModel)]="tarea.fechaVencimiento"></ion-datetime>
-    </ion-item>
-  </ion-list>
-  <ion-button expand="full" (click)="guardar()">Guardar Tarea</ion-button>
+    <div class="notion-stat-card">
+      <div class="stat-icon-container">
+        <ion-icon name="checkmark-done-outline"></ion-icon>
+      </div>
+      <div class="stat-content">
+        <h3>{{ tareasCompletadas }}</h3>
+        <p>Completadas</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lista de tareas -->
+  <div class="notion-database-container">
+    <div class="notion-database-header">
+      <div class="notion-database-title">
+        <ion-icon name="albums-outline" class="database-icon"></ion-icon>
+        <h2>Tareas Pendientes</h2>
+      </div>
+      <ion-button fill="clear" size="small" class="notion-view-button">
+        <ion-icon name="options-outline" slot="start"></ion-icon>
+        Vista
+      </ion-button>
+    </div>
+
+    <!-- Mensaje cuando no hay tareas -->
+    <div class="notion-empty-state" *ngIf="tareas.length === 0">
+      <div class="empty-state-content">
+        <ion-icon name="document-text-outline"></ion-icon>
+        <h3>No hay tareas pendientes</h3>
+        <p>¡Perfecto! Puedes agregar una nueva tarea para comenzar.</p>
+        <ion-button fill="outline" (click)="nuevaTarea()" class="notion-primary-button">
+          <ion-icon name="add" slot="start"></ion-icon>
+          Nueva tarea
+        </ion-button>
+      </div>
+    </div>
+
+    <!-- Lista de tareas cuando hay contenido -->
+    <div class="notion-database-list" *ngIf="tareas.length > 0">
+      <div class="notion-database-row header">
+        <div class="notion-cell" style="flex: 3;">Tarea</div>
+        <div class="notion-cell">Estado</div>
+        <div class="notion-cell">Fecha</div>
+        <div class="notion-cell">Acciones</div>
+      </div>
+
+      <div class="notion-database-row" *ngFor="let tarea of tareas">
+        <div class="notion-cell" style="flex: 3;">
+          <ion-checkbox
+            [checked]="tarea.estado === 'completada'"
+            (ionChange)="toggleEstado(tarea)">
+          </ion-checkbox>
+          <span [class.completed]="tarea.estado === 'completada'">{{ tarea.titulo }}</span>
+        </div>
+        <div class="notion-cell">
+          <span class="notion-tag"
+                [class.pendiente]="tarea.estado !== 'completada'"
+                [class.completada]="tarea.estado === 'completada'">
+            {{ tarea.estado === 'completada' ? 'Completada' : 'Pendiente' }}
+          </span>
+        </div>
+        <div class="notion-cell">{{ tarea.fechaVencimiento | date:'shortDate' }}</div>
+        <div class="notion-cell">
+          <ion-button fill="clear" size="small" (click)="editarTarea(tarea)">
+            <ion-icon name="create-outline"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" size="small" color="danger" (click)="eliminarTarea(tarea.id)">
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botón flotante -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button class="notion-fab-button" (click)="nuevaTarea()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

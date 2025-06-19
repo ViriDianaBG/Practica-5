@@ -1,0 +1,229 @@
+// Variables
+$notion-bg: #f7f6f3;
+$notion-text: #37352f;
+$notion-text-light: #787774;
+$notion-border: #e6e6e6;
+$notion-hover: rgba(55, 53, 47, 0.08);
+$notion-tag-bg: rgba(55, 53, 47, 0.08);
+$notion-pending: #d14545;
+$notion-completed: #45d145;
+
+// Estilos generales
+.notion-style {
+  --background: #{$notion-bg};
+  --ion-font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+// Header
+.notion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  .notion-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: $notion-text;
+    margin: 0;
+  }
+
+  .notion-actions {
+    display: flex;
+    gap: 8px;
+  }
+}
+
+// Botones
+.notion-button {
+  --color: #{$notion-text};
+  --background-activated: #{$notion-hover};
+  text-transform: none;
+  font-weight: 500;
+}
+
+// Estadísticas
+.notion-stats-container {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.notion-stat-card {
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  flex: 1;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid $notion-border;
+
+  .stat-icon-container {
+    background: $notion-hover;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    ion-icon {
+      font-size: 18px;
+      color: $notion-text;
+    }
+  }
+
+  .stat-content {
+    h3 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 700;
+      color: $notion-text;
+    }
+
+    p {
+      margin: 4px 0 0;
+      font-size: 14px;
+      color: $notion-text-light;
+    }
+  }
+}
+
+// Base de datos
+.notion-database-container {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid $notion-border;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+
+  .notion-database-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid $notion-border;
+
+    .notion-database-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      h2 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: $notion-text;
+      }
+    }
+
+    .database-icon {
+      color: $notion-text-light;
+    }
+
+    .notion-view-button {
+      --color: #{$notion-text-light};
+      text-transform: none;
+      font-size: 14px;
+    }
+  }
+}
+
+// Estado vacío
+.notion-empty-state {
+  padding: 48px 24px;
+  text-align: center;
+
+  ion-icon {
+    font-size: 48px;
+    color: $notion-text-light;
+    opacity: 0.5;
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    margin: 0 0 8px;
+    color: $notion-text;
+    font-size: 18px;
+  }
+
+  p {
+    margin: 0 0 16px;
+    color: $notion-text-light;
+    font-size: 14px;
+  }
+
+  .notion-primary-button {
+    --border-color: #{$notion-text};
+    --color: #{$notion-text};
+    --border-radius: 4px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    height: 32px;
+    font-size: 14px;
+    text-transform: none;
+  }
+}
+
+// Lista de tareas
+.notion-database-list {
+  width: 100%;
+
+  .notion-database-row {
+    display: flex;
+    border-bottom: 1px solid $notion-border;
+    padding: 8px 16px;
+    align-items: center;
+
+    &.header {
+      background: $notion-hover;
+      font-weight: 500;
+      font-size: 14px;
+      color: $notion-text-light;
+    }
+
+    .notion-cell {
+      flex: 1;
+      padding: 8px;
+      font-size: 14px;
+      color: $notion-text;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .notion-tag {
+        font-size: 12px;
+        padding: 4px 8px;
+        border-radius: 4px;
+        background: $notion-tag-bg;
+        color: $notion-text;
+
+        &.pendiente {
+          background: lighten($notion-pending, 35%);
+          color: $notion-pending;
+        }
+
+        &.completada {
+          background: lighten($notion-completed, 35%);
+          color: $notion-completed;
+        }
+      }
+
+      .completed {
+        text-decoration: line-through;
+        color: $notion-text-light;
+      }
+    }
+  }
+}
+
+// Botón flotante
+.notion-fab-button {
+  --background: #{$notion-text};
+  --background-activated: #{$notion-text};
+  --color: white;
+  margin-bottom: 16px;
+  margin-right: 16px;
+}

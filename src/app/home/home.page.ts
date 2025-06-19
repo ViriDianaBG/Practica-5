@@ -31,4 +31,11 @@ export class HomePage {
   verDetalles(id: number) {
     this.navCtrl.navigateForward(`/detalles-tarea/${id}`);
   }
+  // Add this inside your HomePage class
+  get tareasPendientes(): number {
+    return this.tareas ? this.tareas.filter((t) => !t.completada).length : 0;
+  }
+  get tareasCompletadas(): number {
+    return this.tareas.filter((t) => t.completada).length;
+  }
 }

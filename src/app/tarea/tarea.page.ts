@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TareaService } from '../services/tarea.service';
 import { NavController } from '@ionic/angular';
 
@@ -8,30 +8,44 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./tarea.page.scss'],
   standalone: false,
 })
-export class TareaPage {
-  tarea = {
-    id: 0,
-    titulo: '',
-    descripcion: '',
-    fechaVencimiento: '',
-  };
+export class TareaPage implements OnInit {
+  tareas: any[] = [];
+  tareasPendientes: number = 0;
+  tareasCompletadas: number = 0;
 
   constructor(
     private tareaService: TareaService,
     private navCtrl: NavController
   ) {}
 
-  async guardar() {
-    if (
-      !this.tarea.titulo ||
-      !this.tarea.descripcion ||
-      !this.tarea.fechaVencimiento
-    ) {
-      alert('Todos los campos son obligatorios.');
-      return;
-    }
+  async ngOnInit() {
+    await this.cargarTareas();
+  }
 
-    await this.tareaService.agregarTarea(this.tarea);
-    this.navCtrl.navigateBack('/home');
+  async cargarTareas() {
+    this.tareas = await this.tareaService.obtenerTareas();
+    this.tareasPendientes = await this.tareaService.contarTareasPendientes();
+    this.tareasCompletadas = await this.tareaService.contarTareasCompletadas();
+  }
+
+  async toggleEstado(tarea: any) {
+    tarea.estado = tarea.estado === 'completada' ? 'pendiente' : 'completada';
+    await this.tareaService.actualizarTarea(tarea);
+    await this.cargarTareas(); // Recargar para actualizar estadísticas
+  }
+
+  nuevaTarea() {
+    this.navCtrl.navigateForward('/agregar-tarea');
+  }
+
+  editarTarea(tarea: any) {
+    this.navCtrl.navigateForward(['/editar-tarea', tarea.id]);
+  }
+
+  async eliminarTarea(id: number) {
+    const tareas = await this.tareaService.obtenerTareas();
+    const nuevasTareas = tareas.filter((t) => t.id !== id);
+    await this.tareaService.guardarTareas(nuevasTareas);
+    await this.cargarTareas();
   }
 }
